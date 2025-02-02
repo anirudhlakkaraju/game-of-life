@@ -1,6 +1,10 @@
 package grid
 
 import "log"
+const (
+	LIVECELL = "■"
+	DEADCELL = " "
+)
 
 // Grid defines a grid and it's dimensions
 type Grid struct {
