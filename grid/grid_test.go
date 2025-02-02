@@ -1,0 +1,32 @@
+package grid
+
+import (
+	"testing"
+)
+
+func TestNewGrid(t *testing.T) {
+	got := NewGrid(6, 4)
+	want := Grid{
+		Width:  6,
+		Height: 4,
+		Cells:  make([][]bool, 4),
+	}
+
+	for i := range want.Cells {
+		want.Cells[i] = make([]bool, 6)
+	}
+
+	// test dimensions
+	if got.Height != want.Height || got.Width != want.Width {
+		t.Errorf("got [ht: %d, wd: %d], want [ht: %d, wd: %d]", got.Height, got.Width, want.Height, want.Width)
+	}
+
+	// test cell initialization
+	for i := range got.Height {
+		for j := range got.Width {
+			if got.Cells[i][j] != false {
+				t.Errorf("want all cells as false, got true at [%d][%d]", i, j)
+			}
+		}
+	}
+}
