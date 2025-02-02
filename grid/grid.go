@@ -84,3 +84,31 @@ func (g *Grid) Render() {
 		fmt.Println()
 	}
 }
+
+// Update applies Conway's rules
+// 1. Any live cell with fewer than two live neighbors dies (underpopulation).
+// 2. Any live cell with two or three live neighbors survives.
+// 3. Any live cell with more than three live neighbors dies (overpopulation).
+// 4. Any dead cell with exactly three live neighbors becomes alive (reproduction).
+func (g *Grid) Update() {
+	// Initialize all cells as dead first
+	newCells := make([][]bool, g.Height)
+	for i := range newCells {
+		newCells[i] = make([]bool, g.Width)
+	}
+
+	for i := range g.Height {
+		for j := range g.Width {
+			nbhs := g.GetNeighbors(i, j)
+			// If alive, check if it survives
+			if g.Cells[i][j] && (nbhs == 2 || nbhs == 3) {
+				newCells[i][j] = true
+			} else if !g.Cells[i][j] && (nbhs == 3) {
+				// Revive dead cells
+				newCells[i][j] = true
+			}
+		}
+	}
+
+	g.Cells = newCells
+}
