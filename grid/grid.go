@@ -44,3 +44,21 @@ var dirs = [][]int{
 	{-1, -1},
 	{-1, 0},
 }
+
+// GetNeighbors returns count of live neighboring cells
+func (g *Grid) GetNeighbors(row, col int) int {
+	nbhs := 0
+	for _, dir := range dirs {
+		r := row + dir[0]
+		c := col + dir[1]
+
+		if r >= 0 && r < g.Height && c >= 0 && c < g.Width {
+			// neighboring cell is alive
+			if g.Cells[r][c] == true {
+				nbhs += 1
+			}
+		}
+	}
+
+	return nbhs
+}
