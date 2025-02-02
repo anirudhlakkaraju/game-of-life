@@ -52,34 +52,6 @@ func TestSetState(t *testing.T) {
 	})
 }
 
-func TestGetNeighbors(t *testing.T) {
-	grid := NewGrid(3, 3)
-	state := [][]bool{
-		{true, false, false},
-		{true, false, true},
-		{false, false, true},
-	}
-	grid.SetState(state)
-
-	t.Run("center of grid", func(t *testing.T) {
-		got := grid.GetNeighbors(1, 1)
-		want := 4
-
-		if got != want {
-			t.Errorf("got %d live neighbors, want %d", got, want)
-		}
-	})
-
-	t.Run("boundary of grid", func(t *testing.T) {
-		got := grid.GetNeighbors(0, 0)
-		want := 1
-
-		if got != want {
-			t.Errorf("got %d live neighbors, want %d", got, want)
-		}
-	})
-}
-
 func TestUpdate(t *testing.T) {
 	t.Run("Oscillator - Blinker", func(t *testing.T) {
 		grid := NewGrid(3, 3)

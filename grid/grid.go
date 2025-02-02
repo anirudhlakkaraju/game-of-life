@@ -36,41 +36,6 @@ func (g *Grid) SetState(state [][]bool) {
 	g.Cells = state
 }
 
-// dirs describes all 8 directions
-var dirs = [][]int{
-	// Top
-	{1, 1},
-	{1, -1},
-	{1, 0},
-
-	// Middle
-	{0, -1},
-	{0, 1},
-
-	// Bottom
-	{-1, 1},
-	{-1, -1},
-	{-1, 0},
-}
-
-// GetNeighbors returns count of live neighboring cells
-func (g *Grid) GetNeighbors(row, col int) int {
-	nbhs := 0
-	for _, dir := range dirs {
-		r := row + dir[0]
-		c := col + dir[1]
-
-		if r >= 0 && r < g.Height && c >= 0 && c < g.Width {
-			// neighboring cell is alive
-			if g.Cells[r][c] == true {
-				nbhs += 1
-			}
-		}
-	}
-
-	return nbhs
-}
-
 // Render displays the cells
 func (g *Grid) Render() {
 	for _, row := range g.Cells {
@@ -99,7 +64,7 @@ func (g *Grid) Update() {
 
 	for i := range g.Height {
 		for j := range g.Width {
-			nbhs := g.GetNeighbors(i, j)
+			nbhs := getNeighbors(i, j, g.Cells)
 			// If alive, check if it survives
 			if g.Cells[i][j] && (nbhs == 2 || nbhs == 3) {
 				newCells[i][j] = true
@@ -111,4 +76,39 @@ func (g *Grid) Update() {
 	}
 
 	g.Cells = newCells
+}
+
+// dirs describes all 8 directions
+var dirs = [][]int{
+	// Top
+	{1, 1},
+	{1, -1},
+	{1, 0},
+
+	// Middle
+	{0, -1},
+	{0, 1},
+
+	// Bottom
+	{-1, 1},
+	{-1, -1},
+	{-1, 0},
+}
+
+// getNeighbors returns count of live neighboring cells
+func getNeighbors(row, col int, state [][]bool) int {
+	nbhs := 0
+	for _, dir := range dirs {
+		r := row + dir[0]
+		c := col + dir[1]
+
+		if r >= 0 && r < len(state) && c >= 0 && c < len(state[0]) {
+			// neighboring cell is alive
+			if state[r][c] == true {
+				nbhs += 1
+			}
+		}
+	}
+
+	return nbhs
 }
