@@ -79,3 +79,59 @@ func TestGetNeighbors(t *testing.T) {
 		}
 	})
 }
+
+func TestUpdate(t *testing.T) {
+	t.Run("Oscillator - Blinker", func(t *testing.T) {
+		grid := NewGrid(3, 3)
+		state := [][]bool{
+			{false, true, false},
+			{false, true, false},
+			{false, true, false},
+		}
+		grid.SetState(state)
+		grid.Update()
+
+		got := grid.Cells
+		want := [][]bool{
+			{false, false, false},
+			{true, true, true},
+			{false, false, false},
+		}
+
+		for i := range got {
+			for j := range got[0] {
+				if got[i][j] != want[i][j] {
+					t.Errorf("cell[%d][%d]: got %v, want %v", i, j, got[i][j], want[i][j])
+				}
+			}
+		}
+	})
+
+	t.Run("Still Life - Block", func(t *testing.T) {
+		grid := NewGrid(4, 4)
+		state := [][]bool{
+			{false, false, false, false},
+			{false, true, true, false},
+			{false, true, true, false},
+			{false, false, false, false},
+		}
+		grid.SetState(state)
+		grid.Update()
+
+		got := grid.Cells
+		want := [][]bool{
+			{false, false, false, false},
+			{false, true, true, false},
+			{false, true, true, false},
+			{false, false, false, false},
+		}
+
+		for i := range got {
+			for j := range got[0] {
+				if got[i][j] != want[i][j] {
+					t.Errorf("cell[%d][%d]: got %v, want %v", i, j, got[i][j], want[i][j])
+				}
+			}
+		}
+	})
+}
