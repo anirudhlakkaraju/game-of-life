@@ -1,6 +1,10 @@
 package grid
 
-import "log"
+import (
+	"fmt"
+	"log"
+)
+
 const (
 	LIVECELL = "■"
 	DEADCELL = " "
@@ -65,4 +69,18 @@ func (g *Grid) GetNeighbors(row, col int) int {
 	}
 
 	return nbhs
+}
+
+// Render displays the cells
+func (g *Grid) Render() {
+	for _, row := range g.Cells {
+		for _, cell := range row {
+			if cell {
+				fmt.Printf(LIVECELL)
+			} else {
+				fmt.Printf(DEADCELL)
+			}
+		}
+		fmt.Println()
+	}
 }
