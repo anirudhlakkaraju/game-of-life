@@ -30,3 +30,24 @@ func TestNewGrid(t *testing.T) {
 		}
 	}
 }
+
+func TestSetState(t *testing.T) {
+	t.Run("valid dimensions", func(t *testing.T) {
+		grid := NewGrid(3, 3)
+		state := [][]bool{
+			{true, false, false},
+			{true, false, true},
+			{false, false, true},
+		}
+
+		grid.SetState(state)
+
+		for i := range grid.Height {
+			for j := range grid.Width {
+				if state[i][j] != grid.Cells[i][j] {
+					t.Errorf("cell[%d][%d]: got %v, want %v", i, j, state[i][j], grid.Cells[i][j])
+				}
+			}
+		}
+	})
+}
