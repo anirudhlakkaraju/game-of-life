@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	LIVECELL = "■"
+	LIVECELL = "X"
 	DEADCELL = " "
 )
 
@@ -64,12 +64,15 @@ func (g *Grid) Update() {
 
 	for i := range g.Height {
 		for j := range g.Width {
+			newCells[i][j] = g.Cells[i][j]
 			nbhs := getNeighbors(i, j, g.Cells)
-			// If alive, check if it survives
-			if g.Cells[i][j] && (nbhs == 2 || nbhs == 3) {
-				newCells[i][j] = true
-			} else if !g.Cells[i][j] && (nbhs == 3) {
-				// Revive dead cells
+			if nbhs < 2 {
+				newCells[i][j] = false
+			}
+			if nbhs >= 4 {
+				newCells[i][j] = false
+			}
+			if nbhs == 3 {
 				newCells[i][j] = true
 			}
 		}
@@ -95,7 +98,7 @@ var dirs = [][]int{
 	{-1, 0},
 }
 
-// getNeighbors returns count of live neighboring cells
+// getNeighbors returns nbhs of live neighboring cells
 func getNeighbors(row, col int, state [][]bool) int {
 	nbhs := 0
 	for _, dir := range dirs {
