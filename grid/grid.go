@@ -1,13 +1,14 @@
 package grid
 
 import (
-	"fmt"
 	"log"
+	"strings"
 )
 
 const (
-	LIVECELL = "X"
-	DEADCELL = " "
+	LIVECELL  = "◼"
+	DEADCELL  = " "
+	LineBreak = "\n"
 )
 
 // Grid defines a grid and it's dimensions
@@ -37,17 +38,21 @@ func (g *Grid) SetState(state [][]bool) {
 }
 
 // Render displays the cells
-func (g *Grid) Render() {
+func (g *Grid) Render() string {
+	var out strings.Builder
+
 	for _, row := range g.Cells {
 		for _, cell := range row {
 			if cell {
-				fmt.Printf(LIVECELL)
+				out.WriteString(LIVECELL)
 			} else {
-				fmt.Printf(DEADCELL)
+				out.WriteString(DEADCELL)
 			}
 		}
-		fmt.Println()
+		out.WriteString(LineBreak)
 	}
+
+	return out.String()
 }
 
 // Update applies Conway's rules
